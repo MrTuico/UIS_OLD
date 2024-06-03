@@ -1,0 +1,64 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block title %}
+Patient Search
+{% endblock %}
+{% block content %}
+<div class="row">
+<div class="col-md-12"> 
+     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold" style="color: rgb(231, 171, 56)">SOCIAL CASE STUDY REPORT</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>DATE OF INTAKE</th>
+                            <th>PATIENT NAME</th>
+                            <th class="text-center">SOCIAL CASTE STUDY REPORT</th>
+                   
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in uis %}
+                            <tr>
+                            <td>{{ u.date }}</td>
+                            <td>
+                                {% for s in show %}
+                                {% if u.uis == s.uis_id %}
+                                {{ s.client_name }}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                      
+                            <td class="text-center">
+                                {% if u.has_scsr == 1 %}
+                                     {% for sc in scsr_uis %}
+                                        {% if sc.uis_id  == u.uis %}
+                                    <a href="{% url 'scsr_pdf' u.uis %}" target="_blank" class="btn btn-success">PRINT</a>
+                                    <a href="{% url 'update_scsr' sc.scsr %}"class="btn btn-warning">VIEW</a>
+                                    {% endif %}
+                                     {% endfor %}
+                                {% else %}
+                                <a href="{% url 'add_scsr' u.uis %}"class="btn btn-danger">ADD SCSR</a>
+                                {% endif %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div> 
+<script>
+    $(document).ready(function() {
+  $('#dataTable').DataTable({
+    "pageLength": 50
+  });
+});
+</script>
+{% endblock %}

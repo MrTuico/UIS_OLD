@@ -1,0 +1,221 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block title %}
+Unified Intake Sheet
+{% endblock %}
+{% block content %}
+<style>
+fieldset {
+  background-color: #eeeeee;
+}
+
+legend {
+  background-color: rgb(118, 165, 184);
+  color: white;
+  padding: 2px 5px;
+}
+.alert {
+    padding: 15px;
+    background-color: #cb5e61;
+    color: white;
+    margin-bottom: 15px;
+    display: none; /* Hide the alert by default */
+  }
+</style>
+<div class="row">
+<div class="col-md-12"> 
+     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold" style="color: rgb(231, 171, 56)">MEDICAL SOCIAL SERVICE ASSESSMENT TOOL (UPDATE)</h6>
+        </div>
+        {% if messages %}
+        <div id="myAlert" class="alert">
+            {% for m in messages %}
+            <strong>{{ m }}</strong>
+            {% endfor %}
+          </div>
+          {% endif%}
+       <div class="card-body">
+        <form action="{% url 'process_update_mssat' mssat_details.mssat %}" method="POST">
+            {% csrf_token %}
+    <fieldset>
+        <legend>DEMOGRAPHIC DATA</legend>
+        <div class="row m-4">
+            <div class="col-md-3">
+                <label>Date of Admission/Consultation:</label>
+                <input type="date" name="doac" class="form-control" value="{{ mssat_details.doac }}">
+            </div>
+            <div class="col-md-3">
+                <label>BASIC WARD/(specify):</label>
+                <input type="text" name="basic_ward" class="form-control"  oninput="this.value = this.value.toUpperCase()" value="{{ mssat_details.basic_ward }}">
+            </div>
+            <div class="col-md-3">
+                <label>NON BASIC WARD(specify):</label>
+                <input type="text" name="non_basic" class="form-control"  oninput="this.value = this.value.toUpperCase()" value ="{{ mssat_details.non_basic }}">
+            </div>
+            <div class="col-md-3">
+                <label>MSS NO::</label>
+                <input type="number" name="mss_no" class="form-control" value="{{ mssat_details.mss_no }}" required>
+            </div>
+            <div class="col-md-3">
+                <label>SOURCE OF REFERRAL NAME:</label>
+                <input type="text" name="src_referal_name" oninput="this.value = this.value.toUpperCase()" class="form-control" value ="{{ mssat_details.src_referal_name }}">
+            </div>
+            <div class="col-md-3">
+                <label>CONTACT NUMBER:</label>
+                <input type="number" name="cnum" class="form-control" value ="{{ mssat_details.cnum }}">
+            </div>
+            <div class="col-md-6">
+                <label>ADDRESS:</label>
+                <input type="text" name="address" oninput="this.value = this.value.toUpperCase()" class="form-control" value ="{{ mssat_details.address }}">
+            </div>
+            <div class="col-md-3">
+                <label>EMPLOYER:</label>
+                <input type="text" name="employer" oninput="this.value = this.value.toUpperCase()" class="form-control" value ="{{ mssat_details.employer }}">
+            </div>
+            <div class="col-md-3">
+                <label>TYLE OF LIVING ARRANGEMENT:</label>
+               <select name="tla" class="form-control">
+                <option value="NONE" {% if mssat_details.tla == 'NONE' %} selected {% endif %}>NONE</option>
+                <option value="OWNED" {% if mssat_details.tla == 'OWNED' %} selected {% endif %}>OWNED</option>
+                <option value="RENT" {% if mssat_details.tla == 'RENT' %} selected {% endif %}>RENT</option>
+                <option value="SHARED" {% if mssat_details.tla == 'SHARED' %} selected {% endif %}>SHARED</option>
+                <option value="PRIVATE" {% if mssat_details.tla == 'PRIVATE' %} selected {% endif %}>PRIVATE</option>
+                <option value="INSTITUTION" {% if mssat_details.tla == 'INSTITUTION' %} selected {% endif %}>INSTITUTION</option>
+                <option value="HOMELESS" {% if mssat_details.tla == 'HOMELESS' %} selected {% endif %}>HOMELESS</option>
+               </select>
+            </div>
+            <div class="col-md-3">
+                <label>PHILHEALTH MEMBERSHIP:</label>
+               <select name="phil_mem" class="form-control">
+                <option value="DIRECT" {% if mssat_details.phil_mem == 'DIRECT' %} selected {% endif %}>DIRECT</option>
+                <option value="INDIRECT" {% if mssat_details.phil_mem == 'INDIRECT' %} selected {% endif %}>INDIRECT</option>
+               </select>
+            </div>
+            <div class="col-md-3">
+                <label>MSWD CLASSIFICATION:</label>
+               <select name="mswd_cassif" class="form-control">
+                <option value="FINANCIALLY CAPABLE" {% if mssat_details.mswd_cassif == 'FINANCIALLY CAPABLE' %} selected {% endif %}>FINANCIALLY CAPABLE</option>
+                <option value="FINANCIALLY INCAPABLE" {% if mssat_details.mswd_cassif == 'FINANCIALLY INCAPABLE' %} selected {% endif %}>FINANCIALLY INCAPABLE</option>
+               </select>
+            </div>
+        </div>
+        <hr>
+    </fieldset>
+   
+
+    <fieldset>
+  
+            <div class="row m-2">
+               
+                    <div class="col-md-6">
+                        <label>MARGINALIZED SECTORAL MEMBERSHIP:</label>
+                       <select name="marginalized_sec_mem" class="form-control">
+                        <option value="ARTISANAL FISHERFOLK" {% if mssat_details.marginalized_sec_mem == 'ARTISANAL FISHERFOLK' %} selected {% endif %}>ARTISANAL FISHERFOLK</option>
+                        <option value="FARMERS AND LANDLESS RURAL WORKERS" {% if mssat_details.marginalized_sec_mem == 'FARMERS AND LANDLESS RURAL WORKERS' %} selected {% endif %}>FARMERS AND LANDLESS RURAL WORKERS</option>
+                        <option value="INDIGENOUS PEOPLE" {% if mssat_details.marginalized_sec_mem == 'INDIGENOUS PEOPLE' %} selected {% endif %}>INDIGENOUS PEOPLE</option>
+                        <option value="FORMAL AND LABOR MIGRANT WORKERS" {% if mssat_details.marginalized_sec_mem == 'FORMAL AND LABOR MIGRANT WORKERS' %} selected {% endif %}>FORMAL AND LABOR MIGRANT WORKERS</option>
+                        <option value="WORKERS IN INFORMAL SECTORS" {% if mssat_details.marginalized_sec_mem == 'WORKERS IN INFORMAL SECTORS' %} selected {% endif %}>WORKERS IN INFORMAL SECTORS</option>
+                        <option value="SENIOR CITIZEN" {% if mssat_details.marginalized_sec_mem == 'SENIOR CITIZEN' %} selected {% endif %}>SENIOR CITIZEN</option>
+                        <option value="PWD" {% if mssat_details.marginalized_sec_mem == 'PWD' %} selected {% endif %}>PWD</option>
+                        <option value="VICTIMS OF DISASTERS AND CALAMTIES" {% if mssat_details.marginalized_sec_mem == 'VICTIMS OF DISASTERS AND CALAMTIES' %} selected {% endif %}>VICTIMS OF DISASTERS AND CALAMTIES</option>
+                        <option value="URBAN POOR" {% if mssat_details.marginalized_sec_mem == 'URBAN POOR' %} selected {% endif %}>URBAN POOR</option>
+                        <option value="OTHERS" {% if mssat_details.marginalized_sec_mem == 'OTHERS' %} selected {% endif %}>OTHERS</option>
+                       </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>CLOTHING:</label>
+                     <input type="number" name="clothing_amt" class="form-control" value="{{ mssat_details.clothing_amt }}">
+                    </div>
+     
+                <div class="col-md-12 mt-4">
+                    <fieldset>
+                        <legend  style="background-color: rgb(83, 151, 146);">FUEL SOURCE</legend>
+                        <div class="row">
+                        <div class="col-md-3">
+                            {% if fs.0 == 'LPG' %}
+                            <input type="checkbox" name="lpg" checked>LPG
+                            <input type="number" class="form-control" name="amt_lpg"  value="{{ amt_fs.0 }}">
+                            {% else %}
+                            <input type="checkbox" name="lpg">LPG
+                            <input type="number" class="form-control" name="amt_lpg"  value="0">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            {% if fs.1 == 'ELECTRICITY' %}
+                            <input type="checkbox" name="elec" checked>ELECTRIC
+                            <input type="number" class="form-control" name="amt_elec"  value="{{ amt_fs.1 }}">
+                            {% else %}
+                            <input type="checkbox" name="elec">ELECTRIC
+                            <input type="number" class="form-control" name="amt_elec"  value="0">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            {% if fs.2 == 'CHARCOAL' %}
+                            <input type="checkbox" name="char" checked>CHARCOAL
+                            <input type="number" class="form-control" name="amt_char"  value="{{ amt_fs.2 }}">
+                            {% else %}
+                            <input type="checkbox" name="char">CHARCOAL
+                            <input type="number" class="form-control" name="amt_char"  value="0">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            {% if fs.3 == 'FIREWOOD' %}
+                            <input type="checkbox" name="fwood" checked>FIREWOOD
+                            <input type="number" class="form-control" name="amt_fwood"  value="{{ amt_fs.3 }}">
+                            {% else %}
+                            <input type="checkbox" name="fwood">FIREWOOD
+                            <input type="number" class="form-control" name="amt_fwood"  value="0">
+                            {% endif %}
+                        </div>
+                        </div>
+                    </fieldset>
+                    </div>
+                    <div class="col-md-12 mt-4">
+
+                 </div>       
+            </div>          
+    </fieldset>
+  
+    <fieldset>
+  
+            <div class="row m-2">
+              
+                <div class="col-md-4">
+                    <label>DURATION OF PROBLEM/SYMPTOMS:</label>
+                    <input type="text" class="form-control"  oninput="this.value = this.value.toUpperCase()" name="duration_of_prob" value="{{ mssat_details.duration_of_prob }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label>PREVIOUS TREATMENT/DURATION:</label>
+                    <input type="text" class="form-control"  oninput="this.value = this.value.toUpperCase()" name="prev_treatment" value="{{ mssat_details.prev_treatment }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label>HEALTH ACCESSIBILITYA PROBLEM:</label>
+                    <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase()" name="health_accessibility_prob" value="{{ mssat_details.health_accessibility_prob }}">
+                </div>
+            </div>
+    </fieldset>
+    </fieldset>
+    <hr>
+    <button type="submit" style="color: rgb(231, 171, 56)" class="btn btn-warning text-white float-right m-2">UPDATE</button>
+</div>
+</form>
+</div>
+</div>
+</div> 
+
+<script>
+    function showAlert(message, duration) {
+    var alertDiv = document.getElementById("myAlert");
+      alertDiv.innerHTML =   message;
+      alertDiv.style.display = "block"; 
+  
+      setTimeout(function() {
+        alertDiv.style.display = "none"; 
+      }, duration);
+    }
+    showAlert("SUCCESSFULLY UPDATED", 3000);
+  </script>
+{% endblock %}

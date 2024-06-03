@@ -1,0 +1,55 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block title %}
+Patient Search
+{% endblock %}
+{% block content %}
+<div class="row">
+<div class="col-md-12"> 
+     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold" style="color: rgb(231, 171, 56)">UNIFIED INTAKE SHEET</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>DATE OF INTAKE</th>
+                            <th>PATIENT NAME</th>
+                            <th>Unified Intake Sheet</th>
+                   
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in uis %}
+                            <tr>
+                            <td>{{ u.date }}</td>
+                            <td>
+                                {% for s in show %}
+                                {% if u.uis == s.uis_id %}
+                                {{ s.client_name }}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center"><a href="{% url 'uis_pdf' u.uis %}" target="_blank" class="btn btn-success">PRINT</a>
+                                <a href="{% url 'update_uis' u.uis %}"  class="btn btn-warning">VIEW</a>
+                            </td>
+                           
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div> 
+<script>
+    $(document).ready(function() {
+  $('#dataTable').DataTable({
+    "pageLength": 50
+  });
+});
+</script>
+{% endblock %}
